@@ -89,7 +89,7 @@ pipeline:
                                     connectorRef: account.Harness_Docker_Connector
                                     image: appleboy/drone-git-push
                                     settings:
-                                        branch: master
+                                        branch: main
                                         author_name: harnessbot
                                         author_email: gitops@harness.io
                                         force: "true"
