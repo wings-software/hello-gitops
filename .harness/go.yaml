@@ -22,8 +22,7 @@ pipeline:
                       type: KubernetesDirect
                       spec:
                           connectorRef: account.cidemo
-                          namespace: harness-delegate-ng
-                          automountServiceAccountToken: true
+                          namespace: default
                   execution:
                       steps:
                           - parallel:
