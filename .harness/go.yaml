@@ -1,0 +1,99 @@
+pipeline:
+    name: go
+    identifier: go
+    allowStageExecutions: false
+    projectIdentifier: GitOps_Demo
+    orgIdentifier: default
+    tags: {}
+    properties:
+        ci:
+            codebase:
+                connectorRef: account.mansonggit
+                repoName: hello-gitops
+                build: <+input>
+    stages:
+        - stage:
+              name: Build and Push
+              identifier: CI
+              type: CI
+              spec:
+                  cloneCodebase: true
+                  infrastructure:
+                      type: KubernetesDirect
+                      spec:
+                          connectorRef: account.cidemo
+                          namespace: harness-delegate-ng
+                          automountServiceAccountToken: true
+                  execution:
+                      steps:
+                          - parallel:
+                                - step:
+                                      type: Run
+                                      name: fmt
+                                      identifier: fmt
+                                      spec:
+                                          connectorRef: account.Harness_Docker_Connector
+                                          image: <+Build_and_Push.variables.goImage>
+                                          shell: Sh
+                                          command: gofmt -s -w .
+                                - step:
+                                      type: Run
+                                      name: vet
+                                      identifier: vet
+                                      spec:
+                                          connectorRef: account.Harness_Docker_Connector
+                                          image: <+Build_and_Push.variables.goImage>
+                                          shell: Sh
+                                          command: |-
+                                              apk add build-base
+                                              go vet ./...
+                          - step:
+                                type: Run
+                                name: test
+                                identifier: test
+                                spec:
+                                    connectorRef: account.Harness_Docker_Connector
+                                    image: pricec/gotestsum
+                                    shell: Sh
+                                    command: gotestsum --junitfile results.xml --format standard-verbose -- -coverprofile=cover.out ./...
+                          - step:
+                                type: BuildAndPushDockerRegistry
+                                name: Build and push Docker image
+                                identifier: Build_and_push_Docker_image
+                                spec:
+                                    connectorRef: account.Harness_Docker_Connector
+                                    repo: mansong/hello-gitops
+                                    tags:
+                                        - <+pipeline.sequenceId>
+                          - step:
+                                type: Run
+                                name: Update Kustomize
+                                identifier: Update_Kustomize
+                                spec:
+                                    connectorRef: account.Harness_Docker_Connector
+                                    image: line/kubectl-kustomize
+                                    shell: Sh
+                                    command: |-
+                                        cd kustomize/base
+                                        kustomize edit set image hello-gitops=mansong/hello-gitops:<+pipeline.sequenceId>
+                                        cat kustomization.yaml
+                          - step:
+                                type: Plugin
+                                name: Git Push
+                                identifier: Git_Push
+                                spec:
+                                    connectorRef: account.Harness_Docker_Connector
+                                    image: appleboy/drone-git-push
+                                    settings:
+                                        branch: master
+                                        author_name: harnessbot
+                                        author_email: gitops@harness.io
+                                        force: "true"
+                                        remote_name: origin
+                                        sus: sus
+                                        commit_message: Update image tag to <+pipeline.sequenceId>
+                                        commit: "true"
+              variables:
+                  - name: goImage
+                    type: String
+                    value: golang:1.16.6-alpine3.14
