@@ -22,8 +22,7 @@ pipeline:
                       type: KubernetesDirect
                       spec:
                           connectorRef: account.cidemo
-                          namespace: harness-delegate-ng
-                          automountServiceAccountToken: true
+                          namespace: default
                   execution:
                       steps:
                           - parallel:
@@ -33,7 +32,7 @@ pipeline:
                                       identifier: fmt
                                       spec:
                                           connectorRef: account.Harness_Docker_Connector
-                                          image: <+Build_and_Push.variables.goImage>
+                                          image: <+CI.variables.goImage>
                                           shell: Sh
                                           command: gofmt -s -w .
                                 - step:
@@ -42,7 +41,7 @@ pipeline:
                                       identifier: vet
                                       spec:
                                           connectorRef: account.Harness_Docker_Connector
-                                          image: <+Build_and_Push.variables.goImage>
+                                          image: <+CI.variables.goImage>
                                           shell: Sh
                                           command: |-
                                               apk add build-base
@@ -90,7 +89,7 @@ pipeline:
                                         author_email: gitops@harness.io
                                         force: "true"
                                         remote_name: origin
-                                        ssh_key: <+secrets.getValue('hellogitopsssh')>
+                                        ssh_key: -----BEGIN RSA PRIVATE KEY----- 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 -----END RSA PRIVATE KEY-----
                                         commit_message: Update image tag to <+pipeline.sequenceId>
                                         commit: "true"
               variables:
