@@ -65,7 +65,7 @@ pipeline:
                                 name: Build and push Docker image
                                 identifier: Build_and_push_Docker_image
                                 spec:
-                                    connectorRef: account.Harness_Docker_Connector
+                                    connectorRef: account.DockerHubMansong
                                     repo: mansong/hello-gitops
                                     tags:
                                         - <+pipeline.sequenceId>
