@@ -90,7 +90,7 @@ pipeline:
                                         author_email: gitops@harness.io
                                         force: "true"
                                         remote_name: origin
-                                        sus: sus
+                                        ssh_key: sus
                                         commit_message: Update image tag to <+pipeline.sequenceId>
                                         commit: "true"
               variables:
