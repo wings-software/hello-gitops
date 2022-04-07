@@ -32,7 +32,7 @@ pipeline:
                                       identifier: fmt
                                       spec:
                                           connectorRef: account.Harness_Docker_Connector
-                                          image: <+Build_and_Push.variables.goImage>
+                                          image: <+CI.variables.goImage>
                                           shell: Sh
                                           command: gofmt -s -w .
                                 - step:
@@ -41,7 +41,7 @@ pipeline:
                                       identifier: vet
                                       spec:
                                           connectorRef: account.Harness_Docker_Connector
-                                          image: <+Build_and_Push.variables.goImage>
+                                          image: <+CI.variables.goImage>
                                           shell: Sh
                                           command: |-
                                               apk add build-base
