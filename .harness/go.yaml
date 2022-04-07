@@ -55,6 +55,11 @@ pipeline:
                                     image: pricec/gotestsum
                                     shell: Sh
                                     command: gotestsum --junitfile results.xml --format standard-verbose -- -coverprofile=cover.out ./...
+                                    reports:
+                                        type: JUnit
+                                        spec:
+                                            paths:
+                                                - "*.xml"
                           - step:
                                 type: BuildAndPushDockerRegistry
                                 name: Build and push Docker image
