@@ -1,4 +1,4 @@
-# Workshop Hello GitOps
+# Hello GitOps
 
 Example project to demonstrate GitOps using [Kustomize](https://github.com/kubernetes-sigs/kustomize), Harness CIE and Harness CD
 
