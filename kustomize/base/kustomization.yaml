@@ -8,4 +8,4 @@ namespace: default
 images:
 - name: hello-gitops
   newName: mansong/hello-gitops
-  newTag: "10"
+  newTag: "11"
