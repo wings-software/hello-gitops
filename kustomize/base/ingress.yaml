@@ -3,11 +3,9 @@ kind: Ingress
 metadata:
   name: hello-gitops
 spec:
-  rules:
-    - http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              serviceName: hello-gitops
-              servicePort: http
+spec:
+  defaultBackend:
+    service:
+      name: hello-gitops
+      port:
+        number: 80
