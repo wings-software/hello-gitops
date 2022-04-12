@@ -3,12 +3,13 @@ kind: Service
 metadata:
   labels:
     app: hello-gitops
-  name: hello-gitops
+  name: hello-gitops-svc
 spec:
   ports:
-    - name: http
-      port: 8080
-      targetPort: http
+  - name: "http"
+    port: 80
+    protocol: TCP
+    targetPort: 80
   selector:
     app: hello-gitops
   type: LoadBalancer
