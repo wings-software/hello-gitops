@@ -5,7 +5,7 @@ metadata:
     app: hello-gitops
   name: hello-gitops
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: hello-gitops
