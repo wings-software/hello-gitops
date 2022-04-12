@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: hello-gitops-ingress
+  name: hello-gitops
 spec:
   rules:
   - http:
@@ -10,6 +10,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: hello-gitops-svc
+            name: hello-gitops
             port:
               number: 80

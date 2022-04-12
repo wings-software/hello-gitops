@@ -3,7 +3,7 @@ kind: Service
 metadata:
   labels:
     app: hello-gitops
-  name: hello-gitops-svc
+  name: hello-gitops
 spec:
   ports:
   - name: "http"
