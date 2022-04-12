@@ -4,7 +4,7 @@ resources:
 - deployment.yaml
 - service.yaml
 - ingress.yaml
-namespace: default
+namespace: hello-gitops
 images:
 - name: hello-gitops
   newName: mansong/hello-gitops
