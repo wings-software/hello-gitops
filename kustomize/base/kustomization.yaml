@@ -3,6 +3,7 @@ kind: Kustomization
 resources:
 - deployment.yaml
 - service.yaml
+- ingress.yaml
 namespace: default
 images:
 - name: hello-gitops
