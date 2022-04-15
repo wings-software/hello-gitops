@@ -6,7 +6,7 @@ Example project to demonstrate GitOps using [Kustomize](https://github.com/kuber
 
 ## What we want to achieve
 
-1. Code change is made to a Go application and pushed to master
+1. Code change is made to a Go application and pushed to main
 2. Harness CIE pipeline is triggered
 3. Code is first unit tested
 4. If tests are OK, the application is packaged as a Docker image and pushed to DockerHub
