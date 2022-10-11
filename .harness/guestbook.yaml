@@ -55,7 +55,7 @@ pipeline:
                   variables:
                     - name: releaseTag
                       type: String
-                      value: <+input>.allowedValues(helm-v0.3,helm-v0.2)
+                      value: <+input>.allowedValues(k8s-v0.1,k8s-v0.2,k8s-v0.3,k8s-v0.4,k8s-v0.5,k8s-v0.6)
           environment:
             environmentRef: <+input>
             deployToAll: false
