@@ -72,4 +72,4 @@ pipeline:
                 type: StageRollback
         variables: []
         delegateSelectors:
-          - cd-demo-se
+          - mansong-delegate
