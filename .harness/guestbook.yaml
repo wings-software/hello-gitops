@@ -71,3 +71,5 @@ pipeline:
               action:
                 type: StageRollback
         variables: []
+        delegateSelectors:
+          - cd-demo-se
