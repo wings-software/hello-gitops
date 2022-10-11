@@ -16,23 +16,25 @@ pipeline:
           execution:
             steps:
               - step:
-                  type: CreatePR
-                  name: Create PR
-                  identifier: createPR
-                  timeout: 10m
+                  type: GitOpsUpdateReleaseRepo
+                  name: Update Release Repo
+                  identifier: Update_Release_Repo
                   spec:
-                    overrideConfig: false
-                    shell: Bash
+                    variables:
+                      - name: envName
+                        type: String
+                        value: <+env.name>
+                  timeout: 10m
               - step:
                   type: HarnessApproval
-                  name: approval gate
+                  name: Approval
                   identifier: approval_gate
                   spec:
                     approvalMessage: Please review the following information and approve the pipeline progression
                     includePipelineExecutionHistory: true
                     approvers:
                       userGroups:
-                        - developers
+                        - account.New_Demo_Group
                       minimumCount: 1
                       disallowPipelineExecutor: false
                     approverInputs: []
@@ -55,9 +57,12 @@ pipeline:
                     - name: releaseTag
                       type: String
                       value: <+input>.allowedValues(helm-v0.3,helm-v0.2)
-          environmentGroup:
-            envGroupRef: <+input>
-            deployToAll: true
+          environment:
+            environmentRef: <+input>
+            deployToAll: <+input>
+            environmentInputs: <+input>
+            serviceOverrideInputs: <+input>
+            gitOpsClusters: <+input>
         tags: {}
         failureStrategies:
           - onFailure:
