@@ -46,6 +46,13 @@ pipeline:
                     deleteSourceBranch: true
                   timeout: 10m
             rollbackSteps: []
+          environment:
+            environmentRef: <+input>
+            deployToAll: <+input>
+            environmentInputs: <+input>
+            serviceOverrideInputs: <+input>
+            gitOpsClusters: <+input>
+          gitOpsEnabled: true
           service:
             serviceRef: guestbookgitops
             serviceInputs:
@@ -56,12 +63,6 @@ pipeline:
                     - name: releaseTag
                       type: String
                       value: <+input>.allowedValues(k8s-v0.1,k8s-v0.2,k8s-v0.3,k8s-v0.4,k8s-v0.5,k8s-v0.6)
-          environment:
-            environmentRef: <+input>
-            deployToAll: false
-            environmentInputs: <+input>
-            serviceOverrideInputs: <+input>
-            infrastructureDefinitions: <+input>
         tags: {}
         failureStrategies:
           - onFailure:
