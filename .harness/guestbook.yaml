@@ -1,0 +1,67 @@
+pipeline:
+  name: guestbook
+  identifier: guestbook
+  projectIdentifier: GitOps_Demo
+  orgIdentifier: default
+  tags: {}
+  stages:
+    - stage:
+        name: guestbook
+        identifier: guestbook
+        description: ""
+        type: Deployment
+        spec:
+          deploymentType: Kubernetes
+          gitOpsEnabled: true
+          execution:
+            steps:
+              - step:
+                  type: CreatePR
+                  name: Create PR
+                  identifier: createPR
+                  timeout: 10m
+                  spec:
+                    overrideConfig: false
+                    shell: Bash
+              - step:
+                  type: HarnessApproval
+                  name: approval gate
+                  identifier: approval_gate
+                  spec:
+                    approvalMessage: Please review the following information and approve the pipeline progression
+                    includePipelineExecutionHistory: true
+                    approvers:
+                      userGroups:
+                        - developers
+                      minimumCount: 1
+                      disallowPipelineExecutor: false
+                    approverInputs: []
+                  timeout: 1d
+              - step:
+                  type: MergePR
+                  name: Merge PR
+                  identifier: mergePR
+                  spec:
+                    deleteSourceBranch: true
+                  timeout: 10m
+            rollbackSteps: []
+          service:
+            serviceRef: guestbookgitops
+            serviceInputs:
+              serviceDefinition:
+                type: Kubernetes
+                spec:
+                  variables:
+                    - name: releaseTag
+                      type: String
+                      value: <+input>.allowedValues(helm-v0.3,helm-v0.2)
+          environmentGroup:
+            envGroupRef: <+input>
+            deployToAll: true
+        tags: {}
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: StageRollback
