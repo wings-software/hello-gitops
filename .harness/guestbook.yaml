@@ -34,6 +34,9 @@ pipeline:
                     approvers:
                       userGroups:
                         - account.New_Demo_Group
+                        - account.Marketing
+                        - account.Field_Engineering
+                        - account.Enterprise_Sales_Manager
                       minimumCount: 1
                       disallowPipelineExecutor: false
                     approverInputs: []
